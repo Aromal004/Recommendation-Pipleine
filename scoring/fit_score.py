@@ -1,15 +1,22 @@
-# scoring/fit_score.py
+# recommend_vm/scoring/fit_score.py
 import numpy as np
 
 def add_fit_score(df, req):
     df = df.copy()
 
-    df["cpu_penalty"] = abs(df["vcpu"] - req["vcpu"]) / req["vcpu"]
-    df["mem_penalty"] = abs(df["memory_gib"] - req["memory_gib"]) / req["memory_gib"]
-    df["net_penalty"] = abs(df["network_mbps"] - req["network_mbps"]) / req["network_mbps"]
+    # Oversize penalties only (underpowered already removed by hard_filter)
+    compute_penalty = (
+        (df["compute_score"] - req["required_compute"]) / req["required_compute"]
+    ).clip(lower=0)
 
-    df["fit_score"] = 1 / (
-        1 + df["cpu_penalty"] + df["mem_penalty"] + df["net_penalty"]
-    )
+    mem_penalty = (
+        (df["memory_gib"] - req["memory_gib"]) / req["memory_gib"]
+    ).clip(lower=0)
+
+    net_penalty = (
+        (df["network_mbps"] - req["network_mbps"]) / req["network_mbps"]
+    ).clip(lower=0)
+
+    df["fit_score"] = 1 / (1 + compute_penalty + mem_penalty + net_penalty)
 
     return df
