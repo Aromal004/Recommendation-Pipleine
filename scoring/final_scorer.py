@@ -1,5 +1,3 @@
-# recommend_vm/scoring/final_scorer.py
-
 def rank_instances(df, weights):
     df = df.copy()
 

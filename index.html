@@ -30,7 +30,6 @@
     overflow-x: hidden;
   }
 
-  /* ── grid background ── */
   body::before {
     content: '';
     position: fixed;
@@ -51,7 +50,6 @@
     padding: 48px 24px 80px;
   }
 
-  /* ── header ── */
   header {
     margin-bottom: 48px;
     border-left: 3px solid var(--accent);
@@ -65,20 +63,9 @@
     text-transform: uppercase;
     margin-bottom: 8px;
   }
-  header h1 {
-    font-size: 32px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-  header p {
-    margin-top: 8px;
-    color: var(--muted);
-    font-size: 14px;
-    font-family: var(--mono);
-  }
+  header h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+  header p  { margin-top: 8px; color: var(--muted); font-size: 14px; font-family: var(--mono); }
 
-  /* ── card ── */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -104,7 +91,6 @@
     background: var(--border);
   }
 
-  /* ── form ── */
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -136,7 +122,73 @@
   input:focus { border-color: var(--accent); }
   input::placeholder { color: var(--muted); }
 
-  /* ── button ── */
+  /* ── endpoint list ── */
+  #endpoint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .endpoint-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 36px;
+    gap: 8px;
+    align-items: center;
+    animation: fadeUp 0.2s forwards;
+  }
+
+  .ep-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 0 0 4px 0;
+  }
+
+  .ep-headers {
+    display: grid;
+    grid-template-columns: 160px 1fr 36px;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .btn-remove {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--danger);
+    font-family: var(--mono);
+    font-size: 16px;
+    cursor: pointer;
+    height: 38px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .btn-remove:hover { border-color: var(--danger); background: rgba(255,71,87,0.08); }
+
+  .btn-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    margin-top: 4px;
+  }
+  .btn-add:hover { border-color: var(--accent); background: rgba(0,212,255,0.05); }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -175,8 +227,7 @@
   #status-bar.show { display: flex; }
 
   .spinner {
-    width: 14px;
-    height: 14px;
+    width: 14px; height: 14px;
     border: 2px solid var(--border);
     border-top-color: var(--accent);
     border-radius: 50%;
@@ -190,12 +241,12 @@
     border-radius: 50%;
     flex-shrink: 0;
   }
-  .dot.running  { background: var(--warn);   animation: pulse 1.2s ease-in-out infinite; }
-  .dot.success  { background: var(--accent2); }
-  .dot.failed   { background: var(--danger); }
+  .dot.running { background: var(--warn); animation: pulse 1.2s ease-in-out infinite; }
+  .dot.success { background: var(--accent2); }
+  .dot.failed  { background: var(--danger); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  /* ── metrics row ── */
+  /* ── metrics ── */
   .metrics-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -216,9 +267,7 @@
   .metric-box:nth-child(3) { animation-delay: 0.15s; }
   .metric-box:nth-child(4) { animation-delay: 0.20s; }
 
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
   .metric-label {
     font-family: var(--mono);
@@ -234,10 +283,28 @@
     font-weight: 600;
     color: var(--accent);
   }
-  .metric-unit {
+  .metric-unit { font-size: 11px; color: var(--muted); margin-left: 4px; }
+
+  /* ── A/B comparison table ── */
+  #ab-section { display: none; margin-bottom: 24px; }
+  #ab-section.show { display: block; }
+
+  .ab-section-title {
+    font-family: var(--mono);
     font-size: 11px;
-    color: var(--muted);
-    margin-left: 4px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ab-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
   }
 
   /* ── results table ── */
@@ -270,6 +337,10 @@
     animation: fadeUp 0.35s forwards;
   }
 
+  /* winner highlight in A/B table */
+  .ab-winner td { background: rgba(0,255,157,0.04); }
+  .ab-winner .ep-name-cell { color: var(--accent2); }
+
   .rank-badge {
     display: inline-flex;
     align-items: center;
@@ -283,21 +354,10 @@
   .rank-2 { background: rgba(0,212,255,0.1);  color: var(--accent);  border: 1px solid var(--accent); }
   .rank-n { background: var(--border);        color: var(--muted);   border: 1px solid var(--border); }
 
-  .instance-type {
-    color: var(--text);
-    font-weight: 500;
-  }
-  .processor {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+  .instance-type { color: var(--text); font-weight: 500; }
+  .processor { font-size: 10px; color: var(--muted); margin-top: 2px; }
 
-  .score-bar-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .score-bar-wrap { display: flex; align-items: center; gap: 8px; }
   .score-bar {
     flex: 1;
     height: 4px;
@@ -306,18 +366,22 @@
     overflow: hidden;
     max-width: 80px;
   }
-  .score-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 0.8s ease;
-  }
-  .score-val { color: var(--accent2); min-width: 36px; }
+  .score-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.8s ease; }
+  .score-val  { color: var(--accent2); min-width: 36px; }
 
-  .price-tag {
-    color: var(--accent2);
-    font-weight: 500;
+  .lat-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .lat-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 60px;
   }
+  .lat-fill { height: 100%; background: var(--warn); border-radius: 2px; }
+  .lat-fill.best { background: var(--accent2); }
+
+  .price-tag { color: var(--accent2); font-weight: 500; }
 
   /* ── error box ── */
   .error-box {
@@ -333,18 +397,13 @@
   }
   .error-box.show { display: block; }
 
-  /* ── log line ── */
-  #log {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    min-height: 16px;
-  }
+  #log { font-family: var(--mono); font-size: 11px; color: var(--muted); min-height: 16px; }
   #log span { color: var(--accent); }
 
   @media (max-width: 600px) {
     .form-grid { grid-template-columns: 1fr; }
     .metrics-row { grid-template-columns: 1fr 1fr; }
+    .endpoint-row { grid-template-columns: 1fr 1fr 36px; }
     .results-table th:nth-child(3),
     .results-table td:nth-child(3),
     .results-table th:nth-child(4),
@@ -358,35 +417,53 @@
   <header>
     <div class="eyebrow">// EC2 Instance Recommender</div>
     <h1>Find Your Optimal VM</h1>
-    <p>Profiles your workload live on AWS · Returns ranked EC2 recommendations</p>
+    <p>Profiles your workload live on AWS · A/B tests multiple endpoints · Returns ranked EC2 recommendations</p>
   </header>
 
   <!-- Input Form -->
   <div class="card">
     <div class="card-title">Workload Configuration</div>
     <div class="form-grid">
+
       <div class="form-group full">
         <label>Container Image URI</label>
         <input type="text" id="container_image"
                placeholder="aromal004/test-workload:latest"
                value="aromal004/test-workload:latest">
       </div>
+
       <div class="form-group">
         <label>Port</label>
         <input type="number" id="port" placeholder="5000" value="5000">
       </div>
-      <div class="form-group">
-        <label>Endpoint</label>
-        <input type="text" id="endpoint" placeholder="/" value="/">
-      </div>
-      <div class="form-group">
-        <label>Total Requests</label>
-        <input type="number" id="total_requests" placeholder="10000" value="10000">
-      </div>
+
       <div class="form-group">
         <label>Concurrency</label>
         <input type="number" id="concurrency" placeholder="100" value="100">
       </div>
+
+      <div class="form-group full">
+        <label>Total Requests (per endpoint)</label>
+        <input type="number" id="total_requests" placeholder="10000" value="10000">
+      </div>
+
+      <!-- Endpoint list -->
+      <div class="form-group full">
+        <label>Endpoints to A/B Test</label>
+        <div class="ep-headers">
+          <span class="ep-label">Name</span>
+          <span class="ep-label">Path</span>
+          <span></span>
+        </div>
+        <div id="endpoint-list">
+          <!-- rows injected by JS -->
+        </div>
+        <button class="btn-add" onclick="addEndpoint()">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Add Endpoint
+        </button>
+      </div>
+
     </div>
     <button class="btn" id="run-btn" onclick="startPipeline()">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -409,14 +486,31 @@
 
   <!-- Observed Metrics -->
   <div id="metrics-section" style="display:none">
-    <div class="card-title" style="font-family:var(--mono);font-size:11px;letter-spacing:0.15em;color:var(--accent);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-      Observed Metrics
-      <span style="flex:1;height:1px;background:var(--border);display:block"></span>
-    </div>
+    <div class="ab-section-title">Observed Metrics</div>
     <div class="metrics-row" id="metrics-row"></div>
   </div>
 
-  <!-- Results -->
+  <!-- A/B Comparison -->
+  <div id="ab-section">
+    <div class="card">
+      <div class="card-title">A/B Endpoint Comparison</div>
+      <table class="results-table" id="ab-table">
+        <thead>
+          <tr>
+            <th>Endpoint</th>
+            <th>Path</th>
+            <th>p50 Latency</th>
+            <th>p95 Latency</th>
+            <th>p99 Latency</th>
+            <th>Req/s</th>
+          </tr>
+        </thead>
+        <tbody id="ab-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VM Recommendations -->
   <div id="results">
     <div class="card">
       <div class="card-title">Recommended Instances</div>
@@ -439,11 +533,60 @@
 </div>
 
 <script>
-  // ── CONFIG — replace with your API Gateway URL ──────────────
   const API_BASE = "https://m50ccolih8.execute-api.us-east-1.amazonaws.com/prod";
-  // ────────────────────────────────────────────────────────────
 
   let pollInterval = null;
+
+  // ── Endpoint list management ────────────────────────────
+
+  function createEndpointRow(name = "", path = "/", removable = true) {
+    const row = document.createElement("div");
+    row.className = "endpoint-row";
+    row.innerHTML = `
+      <input type="text"  class="ep-name" placeholder="e.g. control"  value="${name}">
+      <input type="text"  class="ep-path" placeholder="e.g. /"         value="${path}">
+      <button class="btn-remove" onclick="removeEndpoint(this)" title="Remove">×</button>
+    `;
+    if (!removable) {
+      row.querySelector(".btn-remove").style.opacity = "0.2";
+      row.querySelector(".btn-remove").disabled = true;
+    }
+    return row;
+  }
+
+  function addEndpoint(name = "", path = "/") {
+    const list = document.getElementById("endpoint-list");
+    list.appendChild(createEndpointRow(name, path));
+    updateRemoveButtons();
+  }
+
+  function removeEndpoint(btn) {
+    btn.closest(".endpoint-row").remove();
+    updateRemoveButtons();
+  }
+
+  function updateRemoveButtons() {
+    const rows = document.querySelectorAll(".endpoint-row");
+    rows.forEach((row, i) => {
+      const btn = row.querySelector(".btn-remove");
+      // always keep at least one row; disable remove if only one left
+      btn.disabled = rows.length === 1;
+      btn.style.opacity = rows.length === 1 ? "0.2" : "1";
+    });
+  }
+
+  function getEndpoints() {
+    return [...document.querySelectorAll(".endpoint-row")].map(row => ({
+      name: row.querySelector(".ep-name").value.trim() || "endpoint",
+      path: row.querySelector(".ep-path").value.trim() || "/",
+    }));
+  }
+
+  // Seed with two default endpoints
+  addEndpoint("control", "/");
+  addEndpoint("variant", "/v2");
+
+  // ── UI helpers ──────────────────────────────────────────
 
   function setStatus(state, text) {
     const bar      = document.getElementById("status-bar");
@@ -465,8 +608,8 @@
   }
 
   function setLog(msg) {
-    document.getElementById("log").innerHTML = msg
-      ? `<span>›</span> ${msg}` : "";
+    document.getElementById("log").innerHTML =
+      msg ? `<span>›</span> ${msg}` : "";
   }
 
   function showError(msg) {
@@ -479,16 +622,18 @@
     document.getElementById("error-box").classList.remove("show");
   }
 
+  // ── Render helpers ──────────────────────────────────────
+
   function renderMetrics(metrics, inference) {
     const section = document.getElementById("metrics-section");
     const row     = document.getElementById("metrics-row");
     if (!metrics && !inference) return;
 
     const items = [
-      { label: "CPU p95",    value: (metrics.cpu_p95  || 0).toFixed(1),  unit: "%" },
-      { label: "Memory p95", value: (metrics.mem_p95  || 0).toFixed(1),  unit: "%" },
-      { label: "Latency p99",value: (metrics.latency_p99_ms || 0).toFixed(0), unit: "ms" },
-      { label: "Required vCPU", value: inference.vcpu || "-", unit: "cores" },
+      { label: "CPU p95",       value: (metrics.cpu_p95         || 0).toFixed(1), unit: "%" },
+      { label: "Memory p95",    value: (metrics.mem_p95         || 0).toFixed(1), unit: "%" },
+      { label: "Latency p99",   value: (metrics.latency_p99_ms  || 0).toFixed(0), unit: "ms" },
+      { label: "Required vCPU", value: inference.vcpu || "-",                      unit: "cores" },
     ];
 
     row.innerHTML = items.map(i => `
@@ -501,6 +646,52 @@
     section.style.display = "block";
   }
 
+  function renderABResults(abResults) {
+    if (!abResults || Object.keys(abResults).length === 0) return;
+
+    const section = document.getElementById("ab-section");
+    const tbody   = document.getElementById("ab-body");
+
+    // Find best (lowest) p99 for highlighting
+    const p99s     = Object.values(abResults).map(r => r.latency_p99_ms || 0);
+    const minP99   = Math.min(...p99s);
+    const maxP99   = Math.max(...p99s) || 1;
+
+    // Get endpoint paths from the current form for display
+    const epMap = {};
+    getEndpoints().forEach(ep => { epMap[ep.name] = ep.path; });
+
+    tbody.innerHTML = Object.entries(abResults).map(([name, r], idx) => {
+      const p99      = r.latency_p99_ms  || 0;
+      const p95      = r.latency_p95_ms  || 0;
+      const p50      = r.latency_p50_ms  || 0;
+      const rps      = r.ab_requests_per_sec || 0;
+      const isBest   = p99 === minP99 && p99 > 0;
+      const barWidth = maxP99 > 0 ? (p99 / maxP99 * 100).toFixed(0) : 0;
+      const delay    = (idx * 0.06).toFixed(2);
+      const path     = epMap[name] || "-";
+
+      return `
+        <tr class="${isBest ? "ab-winner" : ""}" style="animation-delay:${delay}s">
+          <td class="ep-name-cell">${name}${isBest ? " ✦" : ""}</td>
+          <td style="color:var(--muted)">${path}</td>
+          <td>${p50.toFixed(1)} ms</td>
+          <td>${p95.toFixed(1)} ms</td>
+          <td>
+            <div class="lat-bar-wrap">
+              <div class="lat-bar">
+                <div class="lat-fill ${isBest ? "best" : ""}" style="width:${barWidth}%"></div>
+              </div>
+              ${p99.toFixed(1)} ms
+            </div>
+          </td>
+          <td>${rps.toFixed(1)}</td>
+        </tr>`;
+    }).join("");
+
+    section.classList.add("show");
+  }
+
   function renderResults(instances) {
     const tbody   = document.getElementById("results-body");
     const section = document.getElementById("results");
@@ -510,8 +701,7 @@
       return;
     }
 
-    // Normalise scores for bar width
-    const scores  = instances.map(i => i.final_score || i.perf_per_dollar || 0);
+    const scores   = instances.map(i => i.final_score || i.perf_per_dollar || 0);
     const maxScore = Math.max(...scores);
 
     tbody.innerHTML = instances.map((inst, idx) => {
@@ -520,21 +710,19 @@
       const barWidth  = maxScore > 0 ? (score / maxScore * 100).toFixed(0) : 0;
       const delay     = (idx * 0.06).toFixed(2);
 
-      const vcpu   = inst.vcpu   || "-";
-      const mem    = inst.memory_gib ? `${inst.memory_gib} GiB` : "-";
-      const net    = inst.network_mbps
+      const vcpu  = inst.vcpu || "-";
+      const mem   = inst.memory_gib ? `${inst.memory_gib} GiB` : "-";
+      const net   = inst.network_mbps
         ? inst.network_mbps >= 1000
-          ? `${(inst.network_mbps/1000).toFixed(0)} Gbps`
+          ? `${(inst.network_mbps / 1000).toFixed(0)} Gbps`
           : `${inst.network_mbps} Mbps`
         : "-";
-      const price  = inst.price_per_hr
-        ? `$${inst.price_per_hr.toFixed(4)}`
-        : "-";
-      const proc   = inst.physicalProcessor || "";
+      const price = inst.price_per_hr ? `$${inst.price_per_hr.toFixed(4)}` : "-";
+      const proc  = inst.physicalProcessor || "";
 
       return `
         <tr style="animation-delay:${delay}s">
-          <td><span class="rank-badge ${rankClass}">${idx+1}</span></td>
+          <td><span class="rank-badge ${rankClass}">${idx + 1}</span></td>
           <td>
             <div class="instance-type">${inst.instanceType}</div>
             ${proc ? `<div class="processor">${proc}</div>` : ""}
@@ -556,19 +744,31 @@
     section.classList.add("show");
   }
 
+  // ── Pipeline ────────────────────────────────────────────
+
   async function startPipeline() {
     clearError();
     document.getElementById("results").classList.remove("show");
+    document.getElementById("ab-section").classList.remove("show");
     document.getElementById("metrics-section").style.display = "none";
     document.getElementById("results-body").innerHTML = "";
+    document.getElementById("ab-body").innerHTML = "";
 
     const btn = document.getElementById("run-btn");
     btn.disabled = true;
 
+    const endpoints = getEndpoints();
+
+    if (endpoints.length === 0) {
+      showError("Add at least one endpoint.");
+      btn.disabled = false;
+      return;
+    }
+
     const payload = {
       container_image: document.getElementById("container_image").value.trim(),
       port:            parseInt(document.getElementById("port").value),
-      endpoint:        document.getElementById("endpoint").value.trim(),
+      endpoints,
       total_requests:  parseInt(document.getElementById("total_requests").value),
       concurrency:     parseInt(document.getElementById("concurrency").value),
     };
@@ -579,8 +779,9 @@
       return;
     }
 
+    const epNames = endpoints.map(e => e.name).join(", ");
     setStatus("running", "Starting pipeline...");
-    setLog("Launching profiling EC2 instance");
+    setLog(`Testing endpoints: ${epNames}`);
 
     try {
       const res  = await fetch(`${API_BASE}/recommend`, {
@@ -594,9 +795,7 @@
         throw new Error(data.error || "Failed to start pipeline");
       }
 
-      const execArn = data.executionArn;
-      setLog("Execution started · polling every 15s");
-      pollResult(execArn, btn);
+      pollResult(data.executionArn, btn, endpoints.length);
 
     } catch (err) {
       setStatus("failed", "Failed to start");
@@ -605,24 +804,24 @@
     }
   }
 
-  function pollResult(execArn, btn) {
+  function pollResult(execArn, btn, endpointCount) {
     let elapsed = 0;
 
     const steps = [
-      { at: 0,   msg: "Running workload on EC2..." },
+      { at: 0,   msg: `Running ${endpointCount} endpoint(s) on EC2...` },
       { at: 30,  msg: "Collecting CloudWatch metrics..." },
       { at: 60,  msg: "Inferring resource requirements..." },
       { at: 90,  msg: "Running Bayesian optimisation..." },
       { at: 120, msg: "Ranking instances..." },
     ];
 
+    if (pollInterval) clearInterval(pollInterval);
+
     pollInterval = setInterval(async () => {
       elapsed += 15;
 
-      // Update log message based on elapsed time
       const step = [...steps].reverse().find(s => elapsed >= s.at);
       if (step) setLog(step.msg);
-
       setStatus("running", `Pipeline running · ${elapsed}s elapsed`);
 
       try {
@@ -635,6 +834,7 @@
           setStatus("success", "Analysis complete");
           setLog("");
           renderMetrics(data.metrics, data.inference);
+          renderABResults(data.ab_results);
           renderResults(data.recommendations);
           btn.disabled = false;
         }
@@ -647,7 +847,6 @@
         }
 
       } catch (err) {
-        // Network hiccup — keep polling
         setLog("Retrying...");
       }
     }, 15000);

@@ -1,4 +1,3 @@
-# recommend_vm/preprocessing/feature_engineering.py
 import pandas as pd
 import re
 import numpy as np
@@ -60,7 +59,6 @@ def add_features(df):
     df["perf_per_dollar"] = df["coremark_per_dollar"]
 
     # Generation score — use coremark_per_core as proxy (newer chips score higher)
-    # Dataset has no currentGeneration column
     df["generation_score"] = (
         df["coremark_per_core"] / df["coremark_per_core"].max()
     )

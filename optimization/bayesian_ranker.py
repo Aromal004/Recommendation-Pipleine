@@ -1,4 +1,3 @@
-# recommend_vm/optimization/bayesian_ranker.py
 from skopt import gp_minimize
 from skopt.space import Real
 
@@ -16,8 +15,8 @@ def optimize_weights(df, top_k=10, n_calls=30):
         w = {k: v / s for k, v in w.items()}
 
         score = (
-            w["fit"]        * df["fit_score"]
-            + w["cost"]     * df["perf_per_dollar"]
+            w["fit"]          * df["fit_score"]
+            + w["cost"]       * df["perf_per_dollar"]
             + w["generation"] * df["generation_score"]
         )
         return -score.nlargest(top_k).mean()

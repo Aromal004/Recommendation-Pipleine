@@ -1,4 +1,3 @@
-# recommend_vm/main.py
 import pandas as pd
 import boto3
 
@@ -9,7 +8,6 @@ from optimization.bayesian_ranker      import optimize_weights
 from scoring.final_scorer              import rank_instances
 from postprocessing.diversify          import diversify
 
-# Baseline: median coremark_per_core across modern x86/ARM chips
 BASELINE_COREMARK_PER_CORE = 27000
 
 
@@ -27,7 +25,6 @@ def run_recommendation(requirements):
 
     # Stage 1: feature engineering + data cleaning
     df = add_features(df)
-
     if df.empty:
         return {"error": "Dataset empty after feature engineering"}
 
