@@ -122,7 +122,6 @@
   input:focus { border-color: var(--accent); }
   input::placeholder { color: var(--muted); }
 
-  /* ── endpoint list ── */
   #endpoint-list {
     display: flex;
     flex-direction: column;
@@ -211,7 +210,6 @@
   .btn:active { transform: scale(0.98); }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-  /* ── status bar ── */
   #status-bar {
     display: none;
     align-items: center;
@@ -236,17 +234,12 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .dot.running { background: var(--warn); animation: pulse 1.2s ease-in-out infinite; }
   .dot.success { background: var(--accent2); }
   .dot.failed  { background: var(--danger); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  /* ── metrics ── */
   .metrics-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -266,7 +259,6 @@
   .metric-box:nth-child(2) { animation-delay: 0.10s; }
   .metric-box:nth-child(3) { animation-delay: 0.15s; }
   .metric-box:nth-child(4) { animation-delay: 0.20s; }
-
   @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
   .metric-label {
@@ -277,15 +269,9 @@
     text-transform: uppercase;
     margin-bottom: 6px;
   }
-  .metric-value {
-    font-family: var(--mono);
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--accent);
-  }
-  .metric-unit { font-size: 11px; color: var(--muted); margin-left: 4px; }
+  .metric-value { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--accent); }
+  .metric-unit  { font-size: 11px; color: var(--muted); margin-left: 4px; }
 
-  /* ── A/B comparison table ── */
   #ab-section { display: none; margin-bottom: 24px; }
   #ab-section.show { display: block; }
 
@@ -300,14 +286,8 @@
     align-items: center;
     gap: 8px;
   }
-  .ab-section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .ab-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* ── results table ── */
   #results { display: none; }
   #results.show { display: block; }
 
@@ -332,12 +312,8 @@
     vertical-align: middle;
   }
   .results-table tr:last-child td { border-bottom: none; }
-  .results-table tr {
-    opacity: 0;
-    animation: fadeUp 0.35s forwards;
-  }
+  .results-table tr { opacity: 0; animation: fadeUp 0.35s forwards; }
 
-  /* winner highlight in A/B table */
   .ab-winner td { background: rgba(0,255,157,0.04); }
   .ab-winner .ep-name-cell { color: var(--accent2); }
 
@@ -357,33 +333,33 @@
   .instance-type { color: var(--text); font-weight: 500; }
   .processor { font-size: 10px; color: var(--muted); margin-top: 2px; }
 
-  .score-bar-wrap { display: flex; align-items: center; gap: 8px; }
-  .score-bar {
-    flex: 1;
-    height: 4px;
-    background: var(--border);
+  /* ── provider badge ── */
+  .provider-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
     border-radius: 2px;
-    overflow: hidden;
-    max-width: 80px;
   }
+  .provider-aws   { background: rgba(255,153,0,0.15);  color: #ff9900; border: 1px solid rgba(255,153,0,0.3); }
+  .provider-azure { background: rgba(0,120,212,0.15);  color: #0078d4; border: 1px solid rgba(0,120,212,0.3); }
+  .provider-gcp   { background: rgba(52,168,83,0.15);  color: #34a853; border: 1px solid rgba(52,168,83,0.3); }
+
+  .score-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .score-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; max-width: 80px; }
   .score-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.8s ease; }
   .score-val  { color: var(--accent2); min-width: 36px; }
 
   .lat-bar-wrap { display: flex; align-items: center; gap: 8px; }
-  .lat-bar {
-    flex: 1;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    max-width: 60px;
-  }
+  .lat-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; max-width: 60px; }
   .lat-fill { height: 100%; background: var(--warn); border-radius: 2px; }
   .lat-fill.best { background: var(--accent2); }
 
   .price-tag { color: var(--accent2); font-weight: 500; }
 
-  /* ── error box ── */
   .error-box {
     display: none;
     padding: 16px 20px;
@@ -404,10 +380,11 @@
     .form-grid { grid-template-columns: 1fr; }
     .metrics-row { grid-template-columns: 1fr 1fr; }
     .endpoint-row { grid-template-columns: 1fr 1fr 36px; }
-    .results-table th:nth-child(3),
-    .results-table td:nth-child(3),
+    /* hide Network and Provider columns on small screens */
     .results-table th:nth-child(4),
-    .results-table td:nth-child(4) { display: none; }
+    .results-table td:nth-child(4),
+    .results-table th:nth-child(5),
+    .results-table td:nth-child(5) { display: none; }
   }
 </style>
 </head>
@@ -415,12 +392,11 @@
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">// EC2 Instance Recommender</div>
+    <div class="eyebrow">// Multi-Cloud VM Recommender</div>
     <h1>Find Your Optimal VM</h1>
-    <p>Profiles your workload live on AWS · A/B tests multiple endpoints · Returns ranked EC2 recommendations</p>
+    <p>Profiles your workload live · A/B tests multiple endpoints · Returns ranked recommendations across AWS, Azure &amp; GCP</p>
   </header>
 
-  <!-- Input Form -->
   <div class="card">
     <div class="card-title">Workload Configuration</div>
     <div class="form-grid">
@@ -447,7 +423,6 @@
         <input type="number" id="total_requests" placeholder="10000" value="10000">
       </div>
 
-      <!-- Endpoint list -->
       <div class="form-group full">
         <label>Endpoints to A/B Test</label>
         <div class="ep-headers">
@@ -455,9 +430,7 @@
           <span class="ep-label">Path</span>
           <span></span>
         </div>
-        <div id="endpoint-list">
-          <!-- rows injected by JS -->
-        </div>
+        <div id="endpoint-list"></div>
         <button class="btn-add" onclick="addEndpoint()">
           <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           Add Endpoint
@@ -473,7 +446,6 @@
     </button>
   </div>
 
-  <!-- Status -->
   <div id="status-bar">
     <div class="spinner" id="status-spinner"></div>
     <div class="dot" id="status-dot" style="display:none"></div>
@@ -481,16 +453,13 @@
     <span id="log" style="margin-left:auto"></span>
   </div>
 
-  <!-- Error -->
   <div class="error-box" id="error-box"></div>
 
-  <!-- Observed Metrics -->
   <div id="metrics-section" style="display:none">
     <div class="ab-section-title">Observed Metrics</div>
     <div class="metrics-row" id="metrics-row"></div>
   </div>
 
-  <!-- A/B Comparison -->
   <div id="ab-section">
     <div class="card">
       <div class="card-title">A/B Endpoint Comparison</div>
@@ -510,7 +479,6 @@
     </div>
   </div>
 
-  <!-- VM Recommendations -->
   <div id="results">
     <div class="card">
       <div class="card-title">Recommended Instances</div>
@@ -519,6 +487,7 @@
           <tr>
             <th>#</th>
             <th>Instance</th>
+            <th>Provider</th>
             <th>vCPU / RAM</th>
             <th>Network</th>
             <th>Price/hr</th>
@@ -537,26 +506,21 @@
 
   let pollInterval = null;
 
-  // ── Endpoint list management ────────────────────────────
+  // ── Endpoint list ───────────────────────────────────────
 
-  function createEndpointRow(name = "", path = "/", removable = true) {
+  function createEndpointRow(name = "", path = "/") {
     const row = document.createElement("div");
     row.className = "endpoint-row";
     row.innerHTML = `
-      <input type="text"  class="ep-name" placeholder="e.g. control"  value="${name}">
-      <input type="text"  class="ep-path" placeholder="e.g. /"         value="${path}">
+      <input type="text" class="ep-name" placeholder="e.g. control" value="${name}">
+      <input type="text" class="ep-path" placeholder="e.g. /"        value="${path}">
       <button class="btn-remove" onclick="removeEndpoint(this)" title="Remove">×</button>
     `;
-    if (!removable) {
-      row.querySelector(".btn-remove").style.opacity = "0.2";
-      row.querySelector(".btn-remove").disabled = true;
-    }
     return row;
   }
 
   function addEndpoint(name = "", path = "/") {
-    const list = document.getElementById("endpoint-list");
-    list.appendChild(createEndpointRow(name, path));
+    document.getElementById("endpoint-list").appendChild(createEndpointRow(name, path));
     updateRemoveButtons();
   }
 
@@ -567,9 +531,8 @@
 
   function updateRemoveButtons() {
     const rows = document.querySelectorAll(".endpoint-row");
-    rows.forEach((row, i) => {
+    rows.forEach(row => {
       const btn = row.querySelector(".btn-remove");
-      // always keep at least one row; disable remove if only one left
       btn.disabled = rows.length === 1;
       btn.style.opacity = rows.length === 1 ? "0.2" : "1";
     });
@@ -582,21 +545,18 @@
     }));
   }
 
-  // Seed with two default endpoints
   addEndpoint("control", "/");
   addEndpoint("variant", "/v2");
 
   // ── UI helpers ──────────────────────────────────────────
 
   function setStatus(state, text) {
-    const bar      = document.getElementById("status-bar");
-    const spinner  = document.getElementById("status-spinner");
-    const dot      = document.getElementById("status-dot");
+    const bar       = document.getElementById("status-bar");
+    const spinner   = document.getElementById("status-spinner");
+    const dot       = document.getElementById("status-dot");
     const statusTxt = document.getElementById("status-text");
-
     bar.classList.add("show");
     statusTxt.textContent = text;
-
     if (state === "running") {
       spinner.style.display = "block";
       dot.style.display = "none";
@@ -608,8 +568,7 @@
   }
 
   function setLog(msg) {
-    document.getElementById("log").innerHTML =
-      msg ? `<span>›</span> ${msg}` : "";
+    document.getElementById("log").innerHTML = msg ? `<span>›</span> ${msg}` : "";
   }
 
   function showError(msg) {
@@ -624,16 +583,23 @@
 
   // ── Render helpers ──────────────────────────────────────
 
+  function providerBadge(provider) {
+    const p = (provider || "").toLowerCase();
+    const labels = { aws: "AWS", azure: "Azure", gcp: "GCP" };
+    const label  = labels[p] || provider || "—";
+    return `<span class="provider-badge provider-${p}">${label}</span>`;
+  }
+
   function renderMetrics(metrics, inference) {
     const section = document.getElementById("metrics-section");
     const row     = document.getElementById("metrics-row");
     if (!metrics && !inference) return;
 
     const items = [
-      { label: "CPU p95",       value: (metrics.cpu_p95         || 0).toFixed(1), unit: "%" },
-      { label: "Memory p95",    value: (metrics.mem_p95         || 0).toFixed(1), unit: "%" },
-      { label: "Latency p99",   value: (metrics.latency_p99_ms  || 0).toFixed(0), unit: "ms" },
-      { label: "Required vCPU", value: inference.vcpu || "-",                      unit: "cores" },
+      { label: "CPU p95",       value: (metrics.cpu_p95        || 0).toFixed(1), unit: "%" },
+      { label: "Memory p95",    value: (metrics.mem_p95        || 0).toFixed(1), unit: "%" },
+      { label: "Latency p99",   value: (metrics.latency_p99_ms || 0).toFixed(0), unit: "ms" },
+      { label: "Required vCPU", value: inference.vcpu || "-",                     unit: "cores" },
     ];
 
     row.innerHTML = items.map(i => `
@@ -649,32 +615,27 @@
   function renderABResults(abResults) {
     if (!abResults || Object.keys(abResults).length === 0) return;
 
-    const section = document.getElementById("ab-section");
-    const tbody   = document.getElementById("ab-body");
+    const tbody  = document.getElementById("ab-body");
+    const p99s   = Object.values(abResults).map(r => r.latency_p99_ms || 0);
+    const minP99 = Math.min(...p99s);
+    const maxP99 = Math.max(...p99s) || 1;
 
-    // Find best (lowest) p99 for highlighting
-    const p99s     = Object.values(abResults).map(r => r.latency_p99_ms || 0);
-    const minP99   = Math.min(...p99s);
-    const maxP99   = Math.max(...p99s) || 1;
-
-    // Get endpoint paths from the current form for display
     const epMap = {};
     getEndpoints().forEach(ep => { epMap[ep.name] = ep.path; });
 
     tbody.innerHTML = Object.entries(abResults).map(([name, r], idx) => {
-      const p99      = r.latency_p99_ms  || 0;
-      const p95      = r.latency_p95_ms  || 0;
-      const p50      = r.latency_p50_ms  || 0;
+      const p99      = r.latency_p99_ms      || 0;
+      const p95      = r.latency_p95_ms      || 0;
+      const p50      = r.latency_p50_ms      || 0;
       const rps      = r.ab_requests_per_sec || 0;
       const isBest   = p99 === minP99 && p99 > 0;
-      const barWidth = maxP99 > 0 ? (p99 / maxP99 * 100).toFixed(0) : 0;
+      const barWidth = (p99 / maxP99 * 100).toFixed(0);
       const delay    = (idx * 0.06).toFixed(2);
-      const path     = epMap[name] || "-";
 
       return `
         <tr class="${isBest ? "ab-winner" : ""}" style="animation-delay:${delay}s">
           <td class="ep-name-cell">${name}${isBest ? " ✦" : ""}</td>
-          <td style="color:var(--muted)">${path}</td>
+          <td style="color:var(--muted)">${epMap[name] || "-"}</td>
           <td>${p50.toFixed(1)} ms</td>
           <td>${p95.toFixed(1)} ms</td>
           <td>
@@ -689,7 +650,7 @@
         </tr>`;
     }).join("");
 
-    section.classList.add("show");
+    document.getElementById("ab-section").classList.add("show");
   }
 
   function renderResults(instances) {
@@ -702,31 +663,31 @@
     }
 
     const scores   = instances.map(i => i.final_score || i.perf_per_dollar || 0);
-    const maxScore = Math.max(...scores);
+    const maxScore = Math.max(...scores) || 1;
 
     tbody.innerHTML = instances.map((inst, idx) => {
       const rankClass = idx === 0 ? "rank-1" : idx === 1 ? "rank-2" : "rank-n";
       const score     = scores[idx];
-      const barWidth  = maxScore > 0 ? (score / maxScore * 100).toFixed(0) : 0;
+      const barWidth  = (score / maxScore * 100).toFixed(0);
       const delay     = (idx * 0.06).toFixed(2);
 
       const vcpu  = inst.vcpu || "-";
-      const mem   = inst.memory_gib ? `${inst.memory_gib} GiB` : "-";
+      const mem   = inst.memory_gib  ? `${inst.memory_gib} GiB` : "-";
       const net   = inst.network_mbps
         ? inst.network_mbps >= 1000
           ? `${(inst.network_mbps / 1000).toFixed(0)} Gbps`
           : `${inst.network_mbps} Mbps`
         : "-";
       const price = inst.price_per_hr ? `$${inst.price_per_hr.toFixed(4)}` : "-";
-      const proc  = inst.physicalProcessor || "";
 
       return `
         <tr style="animation-delay:${delay}s">
           <td><span class="rank-badge ${rankClass}">${idx + 1}</span></td>
           <td>
             <div class="instance-type">${inst.instanceType}</div>
-            ${proc ? `<div class="processor">${proc}</div>` : ""}
+            ${inst.physicalProcessor ? `<div class="processor">${inst.physicalProcessor}</div>` : ""}
           </td>
+          <td>${providerBadge(inst.provider)}</td>
           <td>${vcpu} vCPU · ${mem}</td>
           <td>${net}</td>
           <td class="price-tag">${price}</td>
@@ -754,9 +715,8 @@
     document.getElementById("results-body").innerHTML = "";
     document.getElementById("ab-body").innerHTML = "";
 
-    const btn = document.getElementById("run-btn");
-    btn.disabled = true;
-
+    const btn       = document.getElementById("run-btn");
+    btn.disabled    = true;
     const endpoints = getEndpoints();
 
     if (endpoints.length === 0) {
@@ -779,24 +739,18 @@
       return;
     }
 
-    const epNames = endpoints.map(e => e.name).join(", ");
     setStatus("running", "Starting pipeline...");
-    setLog(`Testing endpoints: ${epNames}`);
+    setLog(`Testing endpoints: ${endpoints.map(e => e.name).join(", ")}`);
 
     try {
       const res  = await fetch(`${API_BASE}/recommend`, {
-        method: "POST",
+        method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body:    JSON.stringify(payload),
       });
       const data = await res.json();
-
-      if (!res.ok || data.error) {
-        throw new Error(data.error || "Failed to start pipeline");
-      }
-
+      if (!res.ok || data.error) throw new Error(data.error || "Failed to start pipeline");
       pollResult(data.executionArn, btn, endpoints.length);
-
     } catch (err) {
       setStatus("failed", "Failed to start");
       showError(err.message);
@@ -819,15 +773,13 @@
 
     pollInterval = setInterval(async () => {
       elapsed += 15;
-
       const step = [...steps].reverse().find(s => elapsed >= s.at);
       if (step) setLog(step.msg);
       setStatus("running", `Pipeline running · ${elapsed}s elapsed`);
 
       try {
-        const encoded = encodeURIComponent(execArn);
-        const res     = await fetch(`${API_BASE}/result?executionArn=${encoded}`);
-        const data    = await res.json();
+        const res  = await fetch(`${API_BASE}/result?executionArn=${encodeURIComponent(execArn)}`);
+        const data = await res.json();
 
         if (data.status === "SUCCEEDED") {
           clearInterval(pollInterval);
@@ -837,16 +789,13 @@
           renderABResults(data.ab_results);
           renderResults(data.recommendations);
           btn.disabled = false;
-        }
-
-        else if (data.status === "FAILED") {
+        } else if (data.status === "FAILED") {
           clearInterval(pollInterval);
           setStatus("failed", "Pipeline failed");
           showError(data.error || "Step Functions execution failed");
           btn.disabled = false;
         }
-
-      } catch (err) {
+      } catch {
         setLog("Retrying...");
       }
     }, 15000);
