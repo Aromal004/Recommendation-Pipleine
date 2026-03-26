@@ -1,7 +1,7 @@
 from main import run_recommendation
 
-# Baseline coremark_per_core for a modern CPU
-# Used to convert observed vCPU count into required_compute
+# Baseline CoreMark score per core used to translate a vCPU requirement
+# into an absolute compute score the ranker can filter on.
 BASELINE_COREMARK_PER_CORE = 27000
 
 
@@ -12,7 +12,6 @@ def lambda_handler(event, context):
     network_mbps = event["network_mbps"]
     max_price    = event.get("max_price", 10.0)
 
-    # Convert vCPU requirement → coremark_total requirement
     required_compute = vcpu * BASELINE_COREMARK_PER_CORE
 
     requirements = {
@@ -24,4 +23,7 @@ def lambda_handler(event, context):
 
     results = run_recommendation(requirements)
 
+    # run_recommendation returns either a list of dicts (success) or a
+    # single dict with an "error" key.  Pass both through unchanged so
+    # the Step Functions state machine can surface errors cleanly.
     return {"recommended_instances": results}

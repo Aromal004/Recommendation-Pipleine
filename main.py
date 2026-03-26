@@ -8,44 +8,34 @@ from optimization.bayesian_ranker      import optimize_weights
 from scoring.final_scorer              import rank_instances
 from postprocessing.diversify          import diversify
 
-BASELINE_COREMARK_PER_CORE = 27000
+S3_BUCKET = "vm-recommendation-data"
+S3_KEY    = "combined_vms.csv"
 
 
-def load_dataset():
+def load_dataset() -> pd.DataFrame:
     s3  = boto3.client("s3")
-    obj = s3.get_object(
-        Bucket="vm-recommendation-data",
-        Key="aws_with_coremark.csv"
-    )
+    obj = s3.get_object(Bucket=S3_BUCKET, Key=S3_KEY)
     return pd.read_csv(obj["Body"])
 
 
-def run_recommendation(requirements):
+def run_recommendation(requirements: dict) -> list[dict] | dict:
     df = load_dataset()
 
-    # Stage 1: feature engineering + data cleaning
     df = add_features(df)
     if df.empty:
         return {"error": "Dataset empty after feature engineering"}
 
-    # Stage 2: hard filter
     df = hard_filter(df, requirements)
     if df.empty:
         return {"error": "No instances satisfy constraints"}
 
-    # Stage 3: fit scoring
-    df = add_fit_score(df, requirements)
-
-    # Stage 4: bayesian weight optimisation
+    df      = add_fit_score(df, requirements)
     weights = optimize_weights(df)
-
-    # Stage 5: rank
-    ranked = rank_instances(df, weights)
-
-    # Stage 6: diversify across families
-    final = diversify(ranked, per_family=2, top_n=10)
+    ranked  = rank_instances(df, weights)
+    final   = diversify(ranked, per_family=2, top_n=10)
 
     return final[[
+        "provider",
         "instanceType",
         "physicalProcessor",
         "vcpu",
@@ -54,5 +44,5 @@ def run_recommendation(requirements):
         "network_mbps",
         "price_per_hr",
         "perf_per_dollar",
-        "final_score"
+        "final_score",
     ]].to_dict(orient="records")
