@@ -18,12 +18,25 @@ def load_dataset() -> pd.DataFrame:
     return pd.read_csv(obj["Body"])
 
 
+def _sanitise(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Drop rows with obviously bad pricing data.
+    A real VM costs at least $0.01/hr; anything below that is a dataset
+    artefact (e.g. the $0.002 Azure M192 rows) that explodes perf_per_dollar.
+    """
+    return df[df["price_per_hr"] >= 0.01].copy()
+
+
 def run_recommendation(requirements: dict) -> list[dict] | dict:
     df = load_dataset()
 
     df = add_features(df)
     if df.empty:
         return {"error": "Dataset empty after feature engineering"}
+
+    df = _sanitise(df)          # ← remove price outliers before scoring
+    if df.empty:
+        return {"error": "Dataset empty after price sanity filter"}
 
     df = hard_filter(df, requirements)
     if df.empty:
