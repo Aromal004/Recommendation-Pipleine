@@ -1,0 +1,2 @@
+Configuration,NDCG@5,Precision@5,Cost savings (%),Right-sizing error,Latency (s)
+No diversification,1.0,1.0,87.33,0.1432,5.04
